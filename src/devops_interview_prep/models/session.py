@@ -58,15 +58,24 @@ class InterviewSession:
         
         while True:
             try:
-                answer = click.prompt("Your answer (1-{})".format(len(shuffled_options)), type=int)
+                answer = click.prompt(
+                    f"Your answer (1-{len(shuffled_options)} or q to quit)",
+                    type=str
+                ).strip().lower()
+
+                if answer == "q":
+                    return False
+
+                answer = int(answer)
+
                 if 1 <= answer <= len(shuffled_options):
                     break
                 else:
-                    click.echo(f"Please enter a number between 1 and {len(shuffled_options)}")
+                    click.echo(f"Please enter a number between 1 and {len(shuffled_options)}, or q to quit")
             except click.Abort:
                 return False
-            except:
-                click.echo("Please enter a valid number")
+            except ValueError:
+                click.echo(f"Please enter a valid number between 1 and {len(shuffled_options)}, or q to quit")
         
         time_taken = (datetime.now() - question_start_time).total_seconds()
         
