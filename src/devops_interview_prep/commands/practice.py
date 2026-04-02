@@ -5,7 +5,6 @@ import click
 from ..core.question_bank import question_bank
 from ..models.session import InterviewSession
 
-
 @click.command(context_settings={"ignore_unknown_options": True})
 @click.argument('topic', required=False)
 @click.option('--difficulty', '-d', help='Difficulty level (easy, medium, hard)')
@@ -24,11 +23,9 @@ def practice(ctx, topic, difficulty, count, company_type, interview_mode, export
         return
 
     topics = question_bank.get_topics()
-
     lcase_topics = {t.lower(): t for t in topics}
 
     if topic:
-        # Display error message if incorrect topic provided
         if topic.lower() not in lcase_topics:
             click.echo(f"Error: Unknown topic '{topic}'\n")
             click.echo("Available topics:")
@@ -42,7 +39,6 @@ def practice(ctx, topic, difficulty, count, company_type, interview_mode, export
         else:
             topic = lcase_topics[topic.lower()]
     else:
-        # No topic provided
         click.echo("Available topics:")
         for t in topics:
             topic_count = question_bank.get_topic_count(t)
@@ -53,12 +49,12 @@ def practice(ctx, topic, difficulty, count, company_type, interview_mode, export
         )
 
     if company_type and not question_bank.get_company_types():
-        click.echo(f"Warning: --company-type filtering is not yet supported (no questions are tagged). Ignoring filter.")
+        click.echo("Warning: --company-type filtering is not yet supported (no questions are tagged). Ignoring filter.")
         company_type = None
 
     questions = question_bank.get_questions(topic, difficulty, count, company_type)
     if not questions:
-        click.echo(f"No questions found for the specified criteria")
+        click.echo("No questions found for the specified criteria")
         return
     
     click.echo(f"\n🎯 Starting practice: {topic.upper()}")
@@ -69,16 +65,19 @@ def practice(ctx, topic, difficulty, count, company_type, interview_mode, export
     click.echo(f"📝 Questions: {len(questions)}")
     
     session = InterviewSession()
-    
+
     for i, question in enumerate(questions, 1):
         click.echo(f"\nQuestion {i}/{len(questions)} | {question.difficulty.upper()}")
-        session.ask_question(question)
-        
+
+        completed = session.ask_question(question)
+        if completed is False:
+            click.echo("\nPractice session cancelled.")
+            break
+
         if interview_mode and i < len(questions):
             if not click.confirm("\nContinue to next question?", default=True):
                 break
-    
+
     session.show_summary()
-    
     if export:
         session.export_results(export)
