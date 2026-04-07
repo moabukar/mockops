@@ -52,9 +52,14 @@ mockops analytics --topic <topic>
 # Quick single question
 mockops quick
 
+# AWS scenario prep with free-text grading (Claude on Bedrock)
+mockops aws-scenario --count 3 --region us-east-1
+
 # Reset progress
 mockops reset
 ```
+
+Set `AWS_REGION` and your AWS credentials/profile in the environment for Bedrock access. Optionally override model with `MOCKOPS_BEDROCK_MODEL_ID`.
 
 ## Docker
 

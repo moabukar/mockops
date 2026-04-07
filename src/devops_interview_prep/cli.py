@@ -13,6 +13,7 @@ from .commands.review import review_mistakes
 from .commands.interview import interview
 from .commands.info import stats, topics, quick
 from .commands.reset import reset
+from .commands.aws_scenario import aws_scenario
 
 
 @click.group(context_settings=dict(
@@ -60,6 +61,7 @@ cli.add_command(stats)
 cli.add_command(topics)
 cli.add_command(quick)
 cli.add_command(reset)
+cli.add_command(aws_scenario)
 cli.add_command(version)
 
 
