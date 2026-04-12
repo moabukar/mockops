@@ -5,6 +5,35 @@ from typing import Dict, List
 
 AWS_SCENARIO_QUESTIONS: List[Dict[str, object]] = [
     {
+        "id": "aws-ec2-troubleshooting-001",
+        "topic": "troubleshooting",
+        "difficulty": "medium",
+        "scenario": (
+            "An EC2 instance running a production application suddenly becomes unreachable. "
+            "Users report the service is down. How would you troubleshoot the issue?"
+        ),
+        "reference_answer": (
+            "First I would check the EC2 instance status checks in the AWS console to confirm whether the issue "
+            "is related to the instance itself or the underlying infrastructure. I would then verify the security groups "
+            "to ensure the correct inbound and outbound rules are configured. I would also check network ACLs and route tables "
+            "to confirm traffic is allowed through the subnet. Next, I would review CloudWatch metrics such as CPU usage and "
+            "network traffic, and check CloudWatch logs for any errors. I would then SSH into the instance if possible to check "
+            "application logs, disk space usage, and whether the service is running correctly. If the instance is behind a load balancer, "
+            "I would check the target group health checks. Finally, I would restart the application or instance if necessary after "
+            "identifying the root cause."
+        ),
+        "rubric": [
+            "checks EC2 instance status checks",
+            "checks security groups",
+            "checks network ACLs or routing",
+            "checks CloudWatch metrics or logs",
+            "checks application logs on the instance",
+            "checks disk space or resource usage",
+            "checks load balancer health checks if applicable",
+            "restarts service or instance after investigation"
+        ],
+    },
+    {
         "id": "aws-iam-001",
         "topic": "iam",
         "difficulty": "medium",
